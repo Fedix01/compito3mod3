@@ -15,11 +15,10 @@ function createHtml(json) {
     let pic = json.photos;
     console.log(pic);
 
-
-    pic.forEach((element, index) => {
+    let cardElements = pic.map((element) => {
         let allPics = element.src.medium;
         let createCards = document.createElement("div");
-        createCards.classList.add("col-md-4", "card", "container-fluid");
+        createCards.classList.add("col-md-4", "col-6", "card", "container-fluid");
         createCards.style.height = "auto";
         let myImg = document.createElement("img");
         myImg.classList.add("img-fluid", "card-img-top");
@@ -32,20 +31,27 @@ function createHtml(json) {
         cardsBody.classList.add("card-body");
         cardsBody.innerHTML = `Title: ${element.alt} <br> Photographer: ${element.
             photographer}`;
-        container.appendChild(createCards);
+        let linkPic = document.createElement("a");
+        linkPic.setAttribute("href", element.url);
+        linkPic.classList.add("btn", "btn-outline-dark");
+        linkPic.style.textAlign = "center";
+        linkPic.innerText = "Open photo";
         createCards.appendChild(myImg);
         createCards.appendChild(cardsBody);
-        console.log(index)
-    });
-    myImg.addEventListener("click", (event) => {
-        console.log(event.target)
+        createCards.appendChild(linkPic)
+        return createCards
     })
+    cardElements.forEach((cardElement) => {
+        container.appendChild(cardElement);
+    });
+
 }
-
-
 
 let dogsBtn = document.getElementById("dogs");
 let catsBtn = document.getElementById("cats");
+
+let searchBar = document.getElementById("search-bar");
+let searchBtn = document.getElementById("search-btn");
 
 dogsBtn.addEventListener("click", () => {
     loadData("dogs");
@@ -54,5 +60,10 @@ dogsBtn.addEventListener("click", () => {
 
 catsBtn.addEventListener("click", () => {
     loadData("cats");
+    container.innerHTML = "";
+})
+
+searchBtn.addEventListener("click", () => {
+    loadData(searchBar.value.toLowerCase());
     container.innerHTML = "";
 })
