@@ -15,20 +15,34 @@ function createHtml(json) {
     let pic = json.photos;
     console.log(pic);
 
+
     pic.forEach((element, index) => {
-        let allPics = element.src.original;
+        let allPics = element.src.medium;
         let createCards = document.createElement("div");
-        createCards.classList.add("col-md-4");
+        createCards.classList.add("col-md-4", "card", "container-fluid");
+        createCards.style.height = "auto";
         let myImg = document.createElement("img");
-        myImg.style.maxHeight = "300px";
-        myImg.style.maxWidth = "300px";
+        myImg.classList.add("img-fluid", "card-img-top");
+        myImg.style.cursor = "pointer";
+        myImg.style.height = "300px";
+        myImg.style.width = "100%";
         myImg.style.objectFit = "cover";
         myImg.src = allPics;
+        let cardsBody = document.createElement("div");
+        cardsBody.classList.add("card-body");
+        cardsBody.innerHTML = `Title: ${element.alt} <br> Photographer: ${element.
+            photographer}`;
         container.appendChild(createCards);
         createCards.appendChild(myImg);
+        createCards.appendChild(cardsBody);
         console.log(index)
     });
+    myImg.addEventListener("click", (event) => {
+        console.log(event.target)
+    })
 }
+
+
 
 let dogsBtn = document.getElementById("dogs");
 let catsBtn = document.getElementById("cats");
